@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="assets/inscript.js" defer></script>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="flex-column min-100-vh">
+    <header class="hero">
+      <h1 class="app-title"><i class="fab fa-github"></i> Weather Dashboard!</h1>
+      <p>Be prepared!plan ahead, u might need to pack a jacket or a swimsuit
+      </p>
+    </header>
+
+    <main  class="flex-row justify-space-between">
+        <div class="card">
+            <h3 class="card-header text-uppercase">Search By City</h3>
+            <form id="city-name" class="card-body">
+                <label class="form-label" for="cityname">City Name</label>
+                <input name="cityname" id="cityname" type="text" autofocus="true" class="form-input" />
+                <button type="search" class="btn">Search</button>
+            </form>
+        </div>
+
+          <div class="weather-info">
+            <h1 class="cityDisplay">City Name</h1>
+            <p class="temp">Temperature: --</p>
+            <p class="humi">Humidity: --</p>
+            <p class="wind">Wind: --</p>
+            <p class="rain">Rain: --</p>
+            <p class="storm">Storm: --</p>
+            <p class="snow">Snow: --</p>
+        </div>
+
+          <div class="week-weather">
+            <div class="forecast-days">
+                <div class="day-box">
+                    <h2>Monday</h2>
+                    <p>Weather: Sunny</p>
+                    <p>Temperature: 75°F</p>
+                </div>
+                <div class="day-box">
+                    <h2>Tuesday</h2>
+                    <p>Weather: Cloudy</p>
+                    <p>Temperature: 70°F</p>
+                </div>
+                <div class="day-box">
+                    <h2>Wednesday</h2>
+                    <p>Weather: Rainy</p>
+                    <p>Temperature: 65°F</p>
+                </div>
+                <div class="day-box">
+                    <h2>Thursday</h2>
+                    <p>Weather: Partly Cloudy</p>
+                    <p>Temperature: 72°F</p>
+                </div>
+                <div class="day-box">
+                    <h2>Friday</h2>
+                    <p>Weather: Sunny</p>
+                    <p>Temperature: 78°F</p>
+                </div>
+
+                <div class="weather-info">
+                    <h1 class="cityDisplay"></h1>
+                </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,120 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.min-100-vh {
+    min-height: 100vh;
+}
+
+/* Header styles */
+.hero {
+    background-color: #db7434;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+}
+
+.app-title {
+    font-size: 24px;
+}
+
+/* Form and card styles */
+.card {
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 20px;
+}
+
+.card-header {
+    font-size: 18px;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.form-input {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.btn {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Weather card styles */
+.weather-info {
+    display: none; /* Initially hide the weather information */
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 20px;
+    text-align: center;
+}
+
+
+.cityDisplay {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.temp, .humi {
+    margin-top: 10px;
+}
+
+.erroDisplay {
+    color: red;
+}
+
+/* Week Forecast styling */
+/* Week Forecast styling */
+/* Updated styling for .week-weather section */
+/* Updated styling for .week-weather section */
+.forecast-days {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.day-box {
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 10px;
+    width: 150px;
+    text-align: center;
+}
+
+.day-box h2 {
+    font-size: 18px;
+    color: #333;
+}
+
+.day-box p {
+    font-size: 14px;
+    color: #555;
+    margin: 5px 0;
+}
