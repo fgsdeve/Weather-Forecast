@@ -1,31 +1,31 @@
-/* WHEN I search for a city
-THEN I am presented with current and future conditions for that city and that city is added to the search history
-WHEN I view current weather conditions for that city
-THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, and the wind speed
-WHEN I view future weather conditions for that city
-THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, the wind speed, and the humidity
-WHEN I click on a city in the search history
-THEN I am again presented with current and future conditions for that city*/
+
 
 const apiKey = '72b5ee0a108bae1bff1d403495a8b843';
-
 const form = document.getElementById('city-name');
 const input = document.getElementById('cityname');
 const weatherInfo = document.querySelector('.weather-info');
 
 form.addEventListener('submit', function(event) {
     event.preventDefault();
-    
     const city = input.value;
 
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`)
         .then(response => response.json())
         .then(data => {
             updateWeatherInfo(data);
-        })
-        .catch(error => {
-            console.error('Error fetching weather data:', error);
-        });
+
+            fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`)
+            .then(response => response.json())
+            .then(forecastData => {
+                updateWeatherForecast(forecastData);
+            })
+            .catch(error => {
+                console.error('Error fetching weather forecast data:', error);
+            });
+    })
+    .catch(error => {
+        console.error('Error fetching weather data:', error);
+    });
 });
 
 
@@ -35,9 +35,7 @@ function updateWeatherInfo(data) {
     const temp = document.querySelector('.temp');
     const humi = document.querySelector('.humi');
     const wind = document.querySelector('.wind');
-    const rain = document.querySelector('.rain');
-    const storm = document.querySelector('.storm');
-    const snow = document.querySelector('.snow');
+
 
     cityDisplay.textContent = data.name;
     temp.textContent = `Temperature: ${data.main.temp}°F`;
@@ -50,54 +48,42 @@ function updateWeatherInfo(data) {
         wind.textContent = 'Wind Speed: N/A';
     }
 
-    // Check if rain data is available
-    if (data.rain) {
-        rain.textContent = `Rain Volume: ${data.rain['1h']} mm`;
-    } else {
-        rain.textContent = 'Rain Volume: N/A';
-    }
+}
+  function updateWeatherForecast(data) {
+    const forecastDaysContainer = document.querySelector('.forecast-days');
+    forecastDaysContainer.innerHTML = ''; // Clear the existing content
 
-    // Check if storm data is available
-    if (data.weather[0].main === 'Thunderstorm') {
-        storm.textContent = 'Storm Conditions: Thunderstorm';
-    } else {
-        storm.textContent = 'Storm Conditions: None';
-    }
-
-    // Check if snow data is available
-    if (data.snow) {
-        snow.textContent = `Snow Volume: ${data.snow['1h']} mm`;
-    } else {
-        snow.textContent = 'Snow Volume: N/A';
-    }
-
-    function updateWeatherForecast(data) {
-        weatherInfo.innerHTML = '';
-    
-        for (let i = 0; i < data.list.length; i++) {
-            const forecast = data.list[i];
+    if (data.list) {
+        data.list.forEach(forecast => {
             const forecastDate = new Date(forecast.dt * 1000); // Convert timestamp to date
-    
-            const forecastItem = document.createElement('div');
-            forecastItem.classList.add('forecast-item');
-    
-            const dateElement = document.createElement('p');
-            dateElement.textContent = forecastDate.toDateString();
-    
+            
+            // Create a day-box element for each forecast day
+            const dayBox = document.createElement('div');
+            dayBox.classList.add('day-box');
+
+            // Create and populate HTML elements with weather data
+            const dayNameElement = document.createElement('h2');
+            dayNameElement.textContent = forecastDate.toLocaleDateString('en-US', { weekday: 'long' });
+
+            const weatherElement = document.createElement('p');
+            weatherElement.textContent = `Weather: ${forecast.weather[0].description}`;
+
             const temperatureElement = document.createElement('p');
             temperatureElement.textContent = `Temperature: ${forecast.main.temp}°F`;
-    
-            const humidityElement = document.createElement('p');
-            humidityElement.textContent = `Humidity: ${forecast.main.humidity}%`;
-    
-            forecastItem.appendChild(dateElement);
-            forecastItem.appendChild(temperatureElement);
-            forecastItem.appendChild(humidityElement);
-    
-            weatherInfo.appendChild(forecastItem);
-        }
 
-    weatherInfo.style.display = 'block'; // Show the weather information
+            // Append weather data elements to day-box
+            dayBox.appendChild(dayNameElement);
+            dayBox.appendChild(weatherElement);
+            dayBox.appendChild(temperatureElement);
+
+            // Append the day-box to the forecast days container
+            forecastDaysContainer.appendChild(dayBox);
+        });
+
+        // Display the weather forecast container
+        forecastDaysContainer.style.display = 'flex';
+    } else {
+        console.error('Error: Data format for forecast is incorrect.');
+    }
 }
 
-}

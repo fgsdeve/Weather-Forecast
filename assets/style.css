@@ -60,16 +60,6 @@ body {
     cursor: pointer;
 }
 
-/* Weather card styles */
-.weather-info {
-    display: none; /* Initially hide the weather information */
-    background-color: #f9f9f9;
-    border-radius: 5px;
-    padding: 20px;
-    margin: 20px;
-    text-align: center;
-}
-
 
 .cityDisplay {
     font-size: 24px;
@@ -85,14 +75,22 @@ body {
 }
 
 /* Week Forecast styling */
-/* Week Forecast styling */
 /* Updated styling for .week-weather section */
-/* Updated styling for .week-weather section */
+
+.weather-info {
+    display: none; /* Initially hide the weather information */
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 20px;
+    text-align: center;
+}
 .forecast-days {
     display: flex;
     justify-content: space-around;
+    text-align: center;
     align-items: center;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     top: 50%;
     left: 50%;
@@ -106,6 +104,8 @@ body {
     margin: 10px;
     width: 150px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
 }
 
 .day-box h2 {
