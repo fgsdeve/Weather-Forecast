@@ -74,8 +74,7 @@ body {
     color: red;
 }
 
-/* Week Forecast styling */
-/* Updated styling for .week-weather section */
+
 
 .weather-info {
     display: none; /* Initially hide the weather information */
@@ -117,4 +116,11 @@ body {
     font-size: 14px;
     color: #555;
     margin: 5px 0;
+}
+
+@media screen and (max-width: 768px) {
+    .week-weather {
+        position: static;
+        margin-top: 20px; /* Adjust this value based on your design */
+    }
 }

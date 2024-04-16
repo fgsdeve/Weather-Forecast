@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Dashboard</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="assets/inscript.js" defer></script>
@@ -12,9 +13,8 @@
 </head>
 <body class="flex-column min-100-vh">
     <header class="hero">
-      <h1 class="app-title"><i class="fab fa-github"></i> Weather Dashboard!</h1>
-      <p>Be prepared!plan ahead, u might need to pack a jacket or a swimsuit
-      </p>
+      <h1 class="app-title"><i class="fas fa-cloud"></i> Weather Dashboard!</h1>
+      <p>Be prepared plan ahead!</p>
     </header>
 
     <main  class="flex-row justify-space-between">
@@ -26,12 +26,13 @@
                 <button type="search" class="btn">Search</button>
             </form>
         </div>
-
-          <div class="weather-info">
+        
+        <div class="weather-info">
             <h1 class="cityDisplay">City Name</h1>
             <p class="temp">Temperature: --</p>
             <p class="humi">Humidity: --</p>
             <p class="wind">Wind: --</p>
+            <i class="weather-icon"></i> <!-- Added this line for the weather icon -->
         </div>
 
         <div class="week-weather">
