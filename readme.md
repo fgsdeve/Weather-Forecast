@@ -25,7 +25,7 @@ The Weather Dashboard is a web application that allows travelers to check the we
 - jQuery
 
 ## Installation
-1. Clone the repository: `git clone https://github.com/fgsdeve/Weather-Forecast`
+1. Clone the repository: `git@github.com:fgsdeve/Weather-Forecast.git`
 2. Navigate to the project directory.
 - cd Weather-Forecast
 3. Open `index.html` in your preferred web browser.
