@@ -2,29 +2,36 @@ const apiKey = '72b5ee0a108bae1bff1d403495a8b843';
 const form = document.getElementById('city-name');
 const input = document.getElementById('cityname');
 const weatherInfo = document.querySelector('.weather-info');
+const forecastDaysContainer = document.querySelector('.forecast-days');
+const searchHistoryContainer = document.createElement('div'); // Container for search history
+document.body.appendChild(searchHistoryContainer); // Append search history container to the body
 
 form.addEventListener('submit', function(event) {
     event.preventDefault();
-    const city = input.value;
+    const city = input.value.trim();
+    if (city) {
+        fetchWeatherData(city);
+        addToSearchHistory(city);
+    }
+});
 
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`)
+function fetchWeatherData(city) {
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`)
         .then(response => response.json())
         .then(data => {
             updateWeatherInfo(data);
+            localStorage.setItem('currentWeather', JSON.stringify(data));
 
-            fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`)
-            .then(response => response.json())
-            .then(forecastData => {
-                updateWeatherForecast(forecastData);
-            })
-            .catch(error => {
-                console.error('Error fetching weather forecast data:', error);
-            });
-    })
-    .catch(error => {
-        console.error('Error fetching weather data:', error);
-    });
-});
+            fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=imperial`)
+                .then(response => response.json())
+                .then(forecastData => {
+                    updateWeatherForecast(forecastData);
+                    localStorage.setItem('weatherForecast', JSON.stringify(forecastData));
+                })
+                .catch(error => console.error('Error fetching weather forecast data:', error));
+        })
+        .catch(error => console.error('Error fetching weather data:', error));
+}
 
 function updateWeatherInfo(data) {
     const cityDisplay = document.querySelector('.cityDisplay');
@@ -36,74 +43,54 @@ function updateWeatherInfo(data) {
     cityDisplay.textContent = data.name;
     temp.textContent = `Temperature: ${data.main.temp}°F`;
     humi.textContent = `Humidity: ${data.main.humidity}%`;
+    wind.textContent = `Wind Speed: ${data.wind.speed} mph`;
 
-    // Check if wind data is available
-    if (data.wind) {
-        wind.textContent = `Wind Speed: ${data.wind.speed} m/s`;
-    } else {
-        wind.textContent = 'Wind Speed: N/A';
-    }
-
-    // Set weather icon
     const iconCode = data.weather[0].icon;
-    weatherIconElement.className = 'weather-icon';
-    weatherIconElement.classList.add(getWeatherIconClass(iconCode));
+    weatherIconElement.className = 'weather-icon fas ' + getWeatherIconClass(iconCode);
+
+    weatherInfo.style.display = 'block';
 }
 
 function getWeatherIconClass(iconCode) {
-    // Map icon codes to appropriate weather icon class  #was a nightmare
-    switch (iconCode) {
-        case '01d':
-            return 'fa-sun';
-        case '01n':
-            return 'fa-moon';
-        case '02d':
-        case '02n':
-            return 'fa-cloud-sun';
-        case '03d':
-        case '03n':
-        case '04d':
-        case '04n':
-            return 'fa-cloud';
-        case '09d':
-        case '09n':
-            return 'fa-cloud-showers-heavy';
-        case '10d':
-        case '10n':
-            return 'fa-cloud-sun-rain';
-        case '11d':
-        case '11n':
-            return 'fa-bolt';
-        case '13d':
-        case '13n':
-            return 'fa-snowflake';
-        case '50d':
-        case '50n':
-            return 'fa-smog';
-        default:
-            return 'fa-question-circle';
-    }
+    const iconMap = {
+        '01d': 'fa-sun',
+        '01n': 'fa-moon',
+        '02d': 'fa-cloud-sun',
+        '02n': 'fa-cloud-sun',
+        '03d': 'fa-cloud',
+        '03n': 'fa-cloud',
+        '04d': 'fa-cloud',
+        '04n': 'fa-cloud',
+        '09d': 'fa-cloud-showers-heavy',
+        '09n': 'fa-cloud-showers-heavy',
+        '10d': 'fa-cloud-sun-rain',
+        '10n': 'fa-cloud-sun-rain',
+        '11d': 'fa-bolt',
+        '11n': 'fa-bolt',
+        '13d': 'fa-snowflake',
+        '13n': 'fa-snowflake',
+        '50d': 'fa-smog',
+        '50n': 'fa-smog'
+    };
+    return iconMap[iconCode] || 'fa-question-circle';
 }
 
 function updateWeatherForecast(data) {
-    const forecastDaysContainer = document.querySelector('.forecast-days');
     forecastDaysContainer.innerHTML = ''; // Clear the existing content
 
-    if (data.list) {
-        console.log(data.list)
+    const uniqueDays = [];
+    data.list.forEach(forecast => {
+        const forecastDate = new Date(forecast.dt * 1000);
+        const dateString = forecastDate.toLocaleDateString('en-US', { weekday: 'long' });
 
-        for(let i=0; i < data.list.length; i=i+7) {
-            const forecast = data.list[i];
-            const forecastDate = new Date(forecast.dt * 1000); // Convert timestamp to date
-            console.log('here is forecaseDate: ', forecastDate) // Convert timestamp to date
-            
-            // Create a day-box element for each forecast day
+        if (!uniqueDays.includes(dateString) && uniqueDays.length < 5) {
+            uniqueDays.push(dateString);
+
             const dayBox = document.createElement('div');
             dayBox.classList.add('day-box');
 
-            // Create and populate HTML elements
             const dayNameElement = document.createElement('h2');
-            dayNameElement.textContent = forecastDate.toLocaleDateString('en-US', { weekday: 'long' });
+            dayNameElement.textContent = dateString;
 
             const weatherElement = document.createElement('p');
             weatherElement.textContent = `Weather: ${forecast.weather[0].description}`;
@@ -111,25 +98,49 @@ function updateWeatherForecast(data) {
             const temperatureElement = document.createElement('p');
             temperatureElement.textContent = `Temperature: ${forecast.main.temp}°F`;
 
-             // Create and add weather icon element
+            const windElement = document.createElement('p');
+            windElement.textContent = `Wind: ${forecast.wind.speed} mph`;
+
+            const humidityElement = document.createElement('p');
+            humidityElement.textContent = `Humidity: ${forecast.main.humidity}%`;
 
             const weatherIconElement = document.createElement('i');
             weatherIconElement.classList.add('fas');
             weatherIconElement.classList.add(getWeatherIconClass(forecast.weather[0].icon));
 
-            // Append weather data elements to day-box
-            dayBox.appendChild(dayNameElement);
-            dayBox.appendChild(weatherIconElement);
-            dayBox.appendChild(weatherElement);
-            dayBox.appendChild(temperatureElement);
-
-            // Append the day-box to the forecast days container
+            dayBox.append(dayNameElement, weatherIconElement, weatherElement, temperatureElement, windElement, humidityElement);
             forecastDaysContainer.appendChild(dayBox);
-        };
+        }
+    });
 
-        // Display the weather forecast container
-        forecastDaysContainer.style.display = 'flex';
-    } else {
-        console.error('Error: Data format for forecast is incorrect.');
+    forecastDaysContainer.style.display = 'flex';
+}
+
+function addToSearchHistory(city) {
+    let searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+    if (!searchHistory.includes(city)) {
+        searchHistory.push(city);
+        localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+        displaySearchHistory();
     }
 }
+
+function displaySearchHistory() {
+    const searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+    searchHistoryContainer.innerHTML = '';
+    searchHistory.forEach(city => {
+        const cityElement = document.createElement('button');
+        cityElement.textContent = city;
+        cityElement.classList.add('btn', 'btn-secondary', 'm-2');
+        cityElement.addEventListener('click', () => fetchWeatherData(city));
+        searchHistoryContainer.appendChild(cityElement);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    displaySearchHistory();
+    const currentWeather = JSON.parse(localStorage.getItem('currentWeather'));
+    const weatherForecast = JSON.parse(localStorage.getItem('weatherForecast'));
+    if (currentWeather) updateWeatherInfo(currentWeather);
+    if (weatherForecast) updateWeatherForecast(weatherForecast);
+});

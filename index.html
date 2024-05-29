@@ -13,17 +13,17 @@
 </head>
 <body class="flex-column min-100-vh">
     <header class="hero">
-      <h1 class="app-title"><i class="fas fa-cloud"></i> Weather Dashboard!</h1>
-      <p>Be prepared plan ahead!</p>
+        <h1 class="app-title"><i class="fas fa-cloud"></i> Weather Dashboard!</h1>
+        <p>Be prepared plan ahead!</p>
     </header>
 
-    <main  class="flex-row justify-space-between">
+    <main class="flex-row justify-space-between">
         <div class="card">
             <h3 class="card-header text-uppercase">Search By City</h3>
             <form id="city-name" class="card-body">
                 <label class="form-label" for="cityname">City Name</label>
                 <input name="cityname" id="cityname" type="text" autofocus="true" class="form-input" />
-                <button type="search" class="btn">Search</button>
+                <button type="submit" class="btn">Search</button>
             </form>
         </div>
         
@@ -32,42 +32,11 @@
             <p class="temp">Temperature: --</p>
             <p class="humi">Humidity: --</p>
             <p class="wind">Wind: --</p>
-            <i class="weather-icon"></i> <!-- Added this line for the weather icon -->
+            <i class="weather-icon"></i>
         </div>
 
         <div class="week-weather">
-            <div class="forecast-days">
-                <div class="day-box">
-                    <h2>Monday</h2>
-                    <p>Weather: Sunny</p>
-                    <p>Temperature:°F</p>
-                    <p>Wind: 5 mph</p>
-                </div>
-                <div class="day-box">
-                    <h2>Tuesday</h2>
-                    <p>Weather: Cloudy</p>
-                    <p>Temperature: 70°F</p>
-                    <p>Wind: 5 mph</p>
-                </div>
-                <div class="day-box">
-                    <h2>Wednesday</h2>
-                    <p>Weather: Rainy</p>
-                    <p>Temperature: 65°F</p>
-                    <p>Wind: 5 mph</p>
-                </div>
-                <div class="day-box">
-                    <h2>Thursday</h2>
-                    <p>Weather: Partly Cloudy</p>
-                    <p>Temperature: 72°F</p>
-                    <p>Wind: 5 mph</p>
-                </div>
-                <div class="day-box">
-                    <h2>Friday</h2>
-                    <p>Weather: Sunny</p>
-                    <p>Temperature: 78°F</p>
-                    <p>Wind: 5 mph</p>
-                </div>
-            </div>
+            <div class="forecast-days"></div>
         </div>
     </main>
 </body>
